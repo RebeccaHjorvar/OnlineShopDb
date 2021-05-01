@@ -27,7 +27,8 @@ namespace Database_IndividualAssignment02
             Console.WriteLine("2. Add customer");
             Console.WriteLine("3. Update customer");
             Console.WriteLine("4. Delete customer");
-            Console.WriteLine("5. Go back to main menu");
+            Console.WriteLine("5. Filter customers");
+            Console.WriteLine("6. Go back to main menu");
 
             try
             {
@@ -57,6 +58,11 @@ namespace Database_IndividualAssignment02
                     MainMenuCustomers();
                 }
                 else if (input == "5")
+                {
+                    FilterCustomer();
+                    MainMenuCustomers();
+                }
+                else if (input == "6")
                 {
                     Program.MainMenuStart();
                 }
@@ -367,6 +373,124 @@ namespace Database_IndividualAssignment02
                         MainMenuCustomers();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Makes it possible for the user to filter the customers by their first name that is returned as a list (includes a TryCatch)
+        /// </summary>
+        public static void FilterCustomer()
+        {
+            using (var context = new OnlineShopDbContext())
+            {
+                while (true)
+                {
+
+                    
+                    Console.WriteLine("Type the the first name of the customer/customers you want to display:\n");
+                    try
+                    {
+
+                        var input = Console.ReadLine();
+                        var convertedFirstLetter = "";
+                        var convertedRemainingLetters = "";
+                        for (var i = 0; i< input.Length; i++)
+                        {
+                            if (i == 0)
+                            {
+                                convertedFirstLetter = Convert.ToString(input[i]).ToUpper();
+                            }
+                            else
+                            {
+                                convertedRemainingLetters += Convert.ToString(input[i]).ToLower();
+                            }
+                            
+
+                        }
+                        input = convertedFirstLetter + convertedRemainingLetters;
+                        
+                        Console.Clear();
+                        var customers = context.Customers.Where(x => x.FirstName == input).ToList();
+
+                        if (customers.Count != 0)
+                        {
+                            Console.WriteLine($"The following customer/customers have {input} as their first name");
+                            Console.WriteLine("\n----------------------------------------\n");
+                            foreach (var customer in customers)
+                            {
+                                Console.WriteLine(customer.CustomerId);
+                                Console.WriteLine(customer.FirstName);
+                                Console.WriteLine(customer.LastName);
+                            
+                                Console.WriteLine("\n----------------------------------------\n");
+                            }
+                            Console.WriteLine("What would you like to do next?" +
+                                    "\n1. Choose another first name to filter by" +
+                                    "\n2. Go back to the customer menu");
+
+                                var choice = Console.ReadLine();
+                                Console.Clear();
+
+
+                                if (choice == "1")
+                                {
+                                    FilterCustomer();
+                                }
+                                else if (choice == "2")
+                                {
+                                    MainMenuCustomers();
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"{choice} is not recognized, you will be sent to the customer main menu.");
+                                    MainMenuCustomers();
+                                }
+                            }
+                        
+
+                        else if (customers.Count == 0)
+                        { 
+                                Console.WriteLine($"There is no customer that has {input} as their first name\n" +
+                                    "\nWhat would you like to do?" +
+                                    "\n1. Choose another first name to filter by" +
+                                    "\n2. Go back to the customer menu");
+
+                                var choice = Console.ReadLine();
+                                Console.Clear();
+
+                            
+                            if (choice == "1")
+                            {
+                                FilterCustomer();
+                            }
+                                else if (choice == "2")
+                                {
+                                    MainMenuCustomers();
+                                }
+                            else
+                            {
+                                Console.WriteLine($"{choice} is not recognized, you will be sent to the customer main menu.");
+                                MainMenuCustomers();
+                            }
+                        }
+
+                            else
+                            {
+                                Console.WriteLine($"\n{input} is not recognized. Try again!\n");
+                                Console.WriteLine("----------------------------------------");
+                                FilterCustomer();
+                            }
+                        
+                    }
+                    catch (Exception)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Something went wrong. Try again!");
+                        Console.WriteLine("\n----------------------------------------\n");
+                        MainMenuCustomers();
+                    }
+                }
+
             }
         }
     }

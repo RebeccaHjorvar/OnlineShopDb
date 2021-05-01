@@ -10,6 +10,9 @@ namespace Database_IndividualAssignment02.Methods
 {
     class Seeds
     {
+        /// <summary>
+        /// Generates seed to database
+        /// </summary>
         public void Seed()
         {
             OnlineShopDbContext context = new OnlineShopDbContext();
