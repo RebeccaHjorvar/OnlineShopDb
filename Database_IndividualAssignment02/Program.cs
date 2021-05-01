@@ -15,8 +15,6 @@ namespace Database_IndividualAssignment02
 
         static void Main(string[] args)
         {
-            var newSeed = new Seeds();
-            newSeed.Seed();
             DisplayBanner();
             SetColor();
             MainMenuStart();
@@ -26,6 +24,7 @@ namespace Database_IndividualAssignment02
         /// <summary>
         /// Main menu. Includes a TryCatch in case of wrong input.
         /// Also include references to the following methods
+        /// newSeed.Seed(),
         /// AddressMethods.MainMenuAddresses(),
         /// CustomerMethods.MainMenuCustomers(),
         /// CombineMethods.DisplayCombined(),
@@ -33,6 +32,7 @@ namespace Database_IndividualAssignment02
         public static  void MainMenuStart()
         {
             Console.WriteLine("\nWhat would you like look at?\n");
+            Console.WriteLine("0. Seed");
             Console.WriteLine("1. Addresses ");
             Console.WriteLine("2. Customers");
             Console.WriteLine("3. Customer and address");
@@ -42,9 +42,14 @@ namespace Database_IndividualAssignment02
             {
                 var choice = Console.ReadLine();
                 Console.Clear();
-                
 
-                if (choice == "1")
+                if (choice == "0")
+                {
+                    var newSeed = new Seeds();
+                    newSeed.Seed();
+                }
+
+                else if (choice == "1")
                 {
                     AddressMethods.MainMenuAddresses();
                 } 
